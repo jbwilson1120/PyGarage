@@ -3,11 +3,12 @@ import time
 from datetime import datetime
 from flask import Flask, render_template, request
 import socket
+import clsDoor
+import RPi.GPIO as GPIO
 
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(socket.gethostname() + ".local")
 
-import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)  # the pin numbers refer to the board connector not the chip
 GPIO.setwarnings(False)
 GPIO.setup(16, GPIO.IN, GPIO.PUD_UP) # Door 1 is Closed sensor
@@ -58,25 +59,12 @@ BadPassword = 0
 
 Any_Door_Open = 1			#Default Status, If any door is Not Closed, this will be greater than 0
 bgcolor = BG_COLOR_QUESTION		#Default Status, Door is questionable, so background yellow
-door1image = IMAGE_QUESTION		#Default Status, Door is questionable, so image is question mark
-door2image = IMAGE_QUESTION		#Default Status, Door is questionable, so image is question mark
-door3image = IMAGE_QUESTION		#Default Status, Door is questionable, so image is question mark
 
-if NUMBER_OF_DOORS == 1:
-	door1 = "inline-block"
-	door2 = "none"
-	door3 = "none"
-	imagesize = 100
-elif NUMBER_OF_DOORS == 2:
-	door1 = "inline-block"
-	door2 = "inline-block"
-	door3 = "none"
-	imagesize = 100
-elif NUMBER_OF_DOORS == 3:
-	door1 = "inline-block"
-	door2 = "inline-block"
-	door3 = "inline-block"
-	imagesize = 100
+# Setup the doors
+door1 = clsDoor(DOOR_1_NAME, True, 18, 16, 7, SENSORS_PER_DOOR)
+door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), 31, 29, 11, SENSORS_PER_DOOR)
+door2 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), 37, 33, 13, SENSORS_PER_DOOR)
+imagesize = 100
 
 app = Flask(__name__)
 
@@ -101,101 +89,59 @@ def index():
 		Door_To_Open = request.form.get('garagedoorradio', "UNKNOWN")
 		Password_Counter = int(request.form.get('No_Refresh', "0"))
 
-		if code == PASSWORD and ENABLE_PASSWORD == "YES" and Password_Counter == No_Refresh and BadPassword <= 5:  # 12345678 is the Default Password that Opens Garage Door (Code if Password is Correct)
-			print("Door requested to open: " + Door_To_Open)
-			No_Refresh = No_Refresh + 1;
+		if ENABLE_PASSWORD == "YES":
+			if code == PASSWORD and Password_Counter == No_Refresh and BadPassword <= 5:  # 12345678 is the Default Password that Opens Garage Door (Code if Password is Correct)
+				print("Door requested to open: " + Door_To_Open)
+				No_Refresh = No_Refresh + 1;
 
-			if Door_To_Open == "door1":
-				GPIO.output(7, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(7, GPIO.HIGH)
-				time.sleep(2)
-			if Door_To_Open == "door2":
-				GPIO.output(11, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(11, GPIO.HIGH)
-				time.sleep(2)
-			if Door_To_Open == "door2":
-				GPIO.output(13, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(13, GPIO.HIGH)
-				time.sleep(2)
-			
+				if Door_To_Open == "door1":
+					door1.DoorOpen()
+				if Door_To_Open == "door2":
+					door2.DoorOpen()
+				if Door_To_Open == "door3":
+					door3.DoorOpen()
 	
-		else:  		# 12345678 is the Password that Opens Garage Door (Code if Password is Incorrect)
-			if code == "":
-				code = "NULL"
-			else:
-				BadPassword += 1
-				logfile = open("static/log.txt","a")
-				logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Password Entered: " + code + " -- %Y/%m/%d -- %H:%M  \n"))
-				logfile.close()
-				print(request.environ['REMOTE_ADDR'] + " -- " + str(BadPassword) + " wrong password(s) have been entered!")
+			else:  		# 12345678 is the Password that Opens Garage Door (Code if Password is Incorrect)
+				if code == "":
+					code = "NULL"
+				else:
+					BadPassword += 1
+					logfile = open("static/log.txt","a")
+					logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Password Entered: " + code + " -- %Y/%m/%d -- %H:%M  \n"))
+					logfile.close()
+					print(request.environ['REMOTE_ADDR'] + " -- " + str(BadPassword) + " wrong password(s) have been entered!")
 
-			if BadPassword > 5:
-				logfile = open("static/log.txt","a")
-				logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Too Many Wrong Passwords, System Disabled.  -- %Y/%m/%d -- %H:%M  \n"))
-				logfile.close()
-				print("Garage Code Entered: " + code)
-
-
-	door1image = IMAGE_QUESTION		#Default Status, Door is questionable, so image is question mark
-	door2image = IMAGE_QUESTION		#Default Status, Door is questionable, so image is question mark
-	door3image = IMAGE_QUESTION		#Default Status, Door is questionable, so image is question mark
-
-	if GPIO.input(16) == GPIO.HIGH and GPIO.input(18) == GPIO.HIGH:
-		if SENSORS_PER_DOOR == 1:
-			print("Door 1 is Open")
-			door1image = IMAGE_OPEN
+				if BadPassword > 5:
+					logfile = open("static/log.txt","a")
+					logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Too Many Wrong Passwords, System Disabled.  -- %Y/%m/%d -- %H:%M  \n"))
+					logfile.close()
+					print("Garage Code Entered: " + code)
 		else:
-			print("Door 1 is Opening/Closing")
-			door1image = IMAGE_QUESTION
-		Any_Door_Open = 1
-	else:
-		if GPIO.input(16) == GPIO.LOW:
-			print("Door 1 is Closed")
-			door1image = IMAGE_CLOSED
-			Any_Door_Open = 0
-		if GPIO.input(18) == GPIO.LOW:
-			print("Door 1 is Open")
-			door1image = IMAGE_OPEN
-			Any_Door_Open = 2
+			# No password required
+			print("Door requested to open: " + Door_To_Open)
+			No_Refresh += 1
+			match Door_To_Open:
+				case "door1":
+					door1.DoorOpen()
+				case "door2":
+					door2.DoorOpen()
+				case "door3":
+					door3.DoorOpen()
+	
+	print(door1.name + " is " + door1.GetStatus())
 
-	if NUMBER_OF_DOORS > 1:
-		if GPIO.input(29) == GPIO.HIGH and GPIO.input(31) == GPIO.HIGH:
-			if SENSORS_PER_DOOR == 1:
-				print("Door 2 is Open")
-				door2image = IMAGE_OPEN
-			else:
-				print("Door 2 is Opening/Closing")
-				door2image = IMAGE_QUESTION
-			Any_Door_Open = Any_Door_Open + 1
-		else:
-			if GPIO.input(29) == GPIO.LOW:
-				print("Door 2 is Closed")
-				door2image = IMAGE_CLOSED
-			if GPIO.input(31) == GPIO.LOW:
-				print("Door 2 is Open")
-				door2image = IMAGE_OPEN
-				Any_Door_Open = Any_Door_Open + 2
+	if NUMBER_OF_DOORS >=2:
+		print(door2.name + " is " + door2.GetStatus())
 
 	if NUMBER_OF_DOORS == 3:
-		if GPIO.input(33) == GPIO.HIGH and GPIO.input(37) == GPIO.HIGH:
-			if SENSORS_PER_DOOR == 1:
-				print("Door 3 is Open")
-				door3image = IMAGE_OPEN
-			else:
-				print("Door 3 is Opening/Closing")
-				door3image = IMAGE_QUESTION
-			Any_Door_Open = Any_Door_Open + 1
-		else:
-			if GPIO.input(33) == GPIO.LOW:
-				print("Door 3 is Closed")
-				door3image = IMAGE_CLOSED
-			if GPIO.input(37) == GPIO.LOW:
-				print("Door 3 is Open")
-				door3image = IMAGE_OPEN
-				Any_Door_Open = Any_Door_Open + 2
+		print(door3.name + " is " + door3.GetStatus())
+
+	if door1.GetStatus()=="open":
+		Any_Door_Open +=1
+	if door2.GetStatus()=="open":
+		Any_Door_Open +=1
+	if door3.GetStatus()=="open":
+		Any_Door_Open +=1
 
 	if Any_Door_Open == 0:
 		bgcolor = BG_COLOR_CLOSED
@@ -207,16 +153,16 @@ def index():
 	return render_template('doorstatus.txt',
 		Refresher = No_Refresh,
 		color = bgcolor, 
-		door1status = door1image, 
-		door2status = door2image, 
-		door3status = door3image, 
+		door1status = door1.GetImage(), 
+		door2status = door2.GetImage(), 
+		door3status = door3.GetImage(), 
 		doorstatussize = imagesize, 
-		door1visable = door1, 
-		door2visable = door2, 
-		door3visable = door3, 
-		D1Name = DOOR_1_NAME, 
-		D2Name = DOOR_2_NAME, 
-		D3Name = DOOR_3_NAME)
+		door1visable = door1.visible(), 
+		door2visable = door2.visible(), 
+		door3visable = door3.visible(), 
+		D1Name = door1.name, 
+		D2Name = door2.name, 
+		D3Name = door3.name)
 
 
 @app.route('/Settings', methods=['GET', 'POST'])
