@@ -57,7 +57,7 @@ No_Refresh = int(datetime.now().strftime("%d%m"))
 Refresher = int(datetime.now().strftime("%d%m"))
 BadPassword = 0
 
-Any_Door_Open = 1			#Default Status, If any door is Not Closed, this will be greater than 0
+Any_Door_Open = 0			#Default Status, If any door is Not Closed, this will be greater than 0
 bgcolor = BG_COLOR_QUESTION		#Default Status, Door is questionable, so background yellow
 
 # Setup the doors
