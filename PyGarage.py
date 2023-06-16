@@ -85,6 +85,9 @@ def index():
 	if request.method == 'POST':
 		global BadPassword
 		global No_Refresh
+		global door1
+		global door2
+		global door3
 		code = request.form['garagecode']
 		Door_To_Open = request.form.get('garagedoorradio', "UNKNOWN")
 		Password_Counter = int(request.form.get('No_Refresh', "0"))
@@ -120,13 +123,12 @@ def index():
 			# No password required
 			print("Door requested to open: " + Door_To_Open)
 			No_Refresh += 1
-			match Door_To_Open:
-				case "door1":
-					door1.DoorOpen()
-				case "door2":
-					door2.DoorOpen()
-				case "door3":
-					door3.DoorOpen()
+			if Door_To_Open == "door1":
+				door1.DoorOpen()
+			if Door_To_Open == "door2":
+				door2.DoorOpen()
+			if Door_To_Open == "door3":
+				door3.DoorOpen()
 	
 	print(door1.name + " is " + door1.GetStatus())
 
@@ -138,9 +140,9 @@ def index():
 
 	if door1.GetStatus()=="open":
 		Any_Door_Open +=1
-	if door2.GetStatus()=="open":
+	if door2.GetStatus()=="open" and NUMBER_OF_DOORS >=2:
 		Any_Door_Open +=1
-	if door3.GetStatus()=="open":
+	if door3.GetStatus()=="open" and NUMBER_OF_DOORS ==3:
 		Any_Door_Open +=1
 
 	if Any_Door_Open == 0:
@@ -171,13 +173,13 @@ def settings():
 		if request.form['ADMIN'] == ADMIN and request.form['ADMIN_PASS'] == ADMIN_PASS:
 			#open text file in read mode
 			AutoStart = open("/etc/rc.local", "r")
-	 	
+
 			#read whole file to a string
 			AutoStartFile = AutoStart.read()
- 	
+
 			#close file
 			AutoStart.close()
- 
+
 			if ENABLE_PASSWORD == "YES":
 				ENABLE_PASSWORD_YES = " Checked"
 				ENABLE_PASSWORD_NO = ""
@@ -272,10 +274,10 @@ def Settings_Save_Bootfile():
 
 	#open text file in write mode (this will erase current file)
 	AutoStart = open("/etc/rc.local", "w")
- 
+
 	#writes whole string to file
 	AutoStart.write(StartFile)
- 
+
 	#close file
 	AutoStart.close()
 
@@ -289,7 +291,7 @@ def Delete_Log_File():
 	DeleteLogFile = open("static/log.txt", "w")
 
 	DeleteLogFile.write(datetime.now().strftime("Log File Erased -- %Y/%m/%d -- %H:%M \n"))
- 
+
 	#close file
 	DeleteLogFile.close()
 
@@ -298,51 +300,28 @@ def Delete_Log_File():
 
 @app.route('/Siri/GarageDoorStatus', methods=['GET'])
 def GarageDoorStatus():
+	global door1
+	global door2
+	global door3
 	siri_door1_message = ""
 	siri_door2_message = ""
 	siri_door3_message = ""
 	Any_Door_Open = 0
 
-	if GPIO.input(16) == GPIO.HIGH and GPIO.input(18) == GPIO.HIGH: #Door 1 Unknown
-		if SENSORS_PER_DOOR == 1:
-			siri_door1_message = DOOR_1_NAME + " is open"
-		else:
-			siri_door1_message = DOOR_1_NAME + " is questionable"
-		Any_Door_Open = 1
-	else:
-		if GPIO.input(16) == GPIO.LOW: # Door 1 Closed
-			siri_door1_message = ""
-		if GPIO.input(18) == GPIO.LOW: # Door 1 Open
-			siri_door1_message = DOOR_1_NAME + " is open"
-			Any_Door_Open = 1
+	siri_door1_message = door1.name + " is " + door1.GetStatus()
 
-	if NUMBER_OF_DOORS > 1:
-		if GPIO.input(29) == GPIO.HIGH and GPIO.input(31) == GPIO.HIGH:
-			if SENSORS_PER_DOOR == 1:
-				siri_door2_message = DOOR_2_NAME + " is open"
-			else:
-				siri_door2_message = DOOR_2_NAME + " is questionable"
-			Any_Door_Open = Any_Door_Open + 1
-		else:
-			if GPIO.input(29) == GPIO.LOW:
-				siri_door1_message = ""
-			if GPIO.input(31) == GPIO.LOW:
-				siri_door2_message = DOOR_2_NAME + " is open"
-				Any_Door_Open = Any_Door_Open + 1
+	if NUMBER_OF_DOORS >=2:
+		siri_door2_message = door2.name + " is " + door2.GetStatus()
 
 	if NUMBER_OF_DOORS == 3:
-		if GPIO.input(33) == GPIO.HIGH and GPIO.input(37) == GPIO.HIGH:
-			if SENSORS_PER_DOOR == 1:
-				siri_door3_message = DOOR_3_NAME + " is open"
-			else:
-				siri_door3_message = DOOR_3_NAME + " is questionable"
-			Any_Door_Open = Any_Door_Open + 1
-		else:
-			if GPIO.input(33) == GPIO.LOW:
-				siri_door3_message = ""
-			if GPIO.input(37) == GPIO.LOW:
-				siri_door3_message = DOOR_1_NAME + " is open"
-				Any_Door_Open = Any_Door_Open + 1
+		siri_door3_message = door3.name + " is " + door3.GetStatus()
+
+	if door1.GetStatus()=="open":
+		Any_Door_Open +=1
+	if door2.GetStatus()=="open" and NUMBER_OF_DOORS >=2:
+		Any_Door_Open +=1
+	if door3.GetStatus()=="open"and NUMBER_OF_DOORS ==3:
+		Any_Door_Open +=1
 
 	siri_message = ""
 	if Any_Door_Open == 0:
@@ -370,77 +349,41 @@ def GarageSiri():
 	ps = request.form['ps']
 	what_door = request.form['door']
 	dowhat = request.form['dowhat']
-
+	global door1
+	global door2
+	global door3
 
 	if ps == SIRI_PASSWORD:
 		logfile = open("static/log.txt","a")
 		logfile.write(datetime.now().strftime("%Y/%m/%d -- %H:%M:%S  -- " + request.environ['REMOTE_ADDR'] + " -- Garage Door Operated via Siri  \n"))
 		logfile.close()
 
-		if what_door == "Door1" and dowhat == "Open":
-			if GPIO.input(16) == GPIO.LOW:
-				print("Door 1 is currently Closed, let's open it.")
-				GPIO.output(7, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(7, GPIO.HIGH)
-				return 'Garage Door Opening'
-			if GPIO.input(16) == GPIO.HIGH:
-				print("Garage is already open, do nothing.")
-				return 'Door 1 is already open'
-		if what_door == "Door1" and dowhat == "Close":
-			if GPIO.input(18) == GPIO.LOW:
-				print("Garage is currently Open, let's close it.")
-				GPIO.output(7, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(7, GPIO.HIGH)
-				return 'Garage Door Closing'
-			if GPIO.input(18) == GPIO.HIGH:
-				print("Garage is already closed, do nothing.")
-				return 'Door 1 is already closed'
+		if what_door == "Door1" and dowhat == "Open" and door1.GetStatus()!="open":
+			print("Door 1 is currently Closed, let's open it.")
+			door1.PushButton()
+			return 'Garage Door Opening'
+		if what_door == "Door1" and dowhat == "Close" and door1.GetStatus()!="closed":
+			print("Garage is currently Open, let's close it.")
+			door1.PushButton()
+			return 'Garage Door Closing'
+		
+		if what_door == "Door2" and dowhat == "Open" and door2.GetStatus()!="open":
+			print("Door 2 is currently Closed, let's open it.")
+			door2.PushButton()
+			return 'Garage Door Opening'
+		if what_door == "Door2" and dowhat == "Close" and door2.GetStatus()!="closed":
+			print("Garage is currently Open, let's close it.")
+			door2.PushButton()
+			return 'Garage Door Closing'
 
-
-		if what_door == "Door2" and dowhat == "Open":
-			if GPIO.input(29) == GPIO.LOW:
-				print("Door 2 is currently Closed, let's open it.")
-				GPIO.output(11, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(11, GPIO.HIGH)
-				return 'Garage Door Opening'
-			if GPIO.input(29) == GPIO.HIGH:
-				print("Garage is already open, do nothing.")
-				return 'Door 2 is already open'
-		if what_door == "Door2" and dowhat == "Close":
-			if GPIO.input(31) == GPIO.LOW:
-				print("Garage is currently Open, let's close it.")
-				GPIO.output(11, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(11, GPIO.HIGH)
-				return 'Garage Door Closing'
-			if GPIO.input(31) == GPIO.HIGH:
-				print("Garage is already closed, do nothing.")
-				return 'Door 2 is already closed'
-
-		if what_door == "Door3" and dowhat == "Open":
-			if GPIO.input(33) == GPIO.LOW:
-				print("Door 2 is currently Closed, let's open it.")
-				GPIO.output(13, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(13, GPIO.HIGH)
-				return 'Garage Door Opening'
-			if GPIO.input(33) == GPIO.HIGH:
-				print("Garage is already open, do nothing.")
-				return 'Door 2 is already open'
-		if what_door == "Door3" and dowhat == "Close":
-			if GPIO.input(37) == GPIO.LOW:
-				print("Garage is currently Open, let's close it.")
-				GPIO.output(13, GPIO.LOW)
-				time.sleep(1)
-				GPIO.output(13, GPIO.HIGH)
-				return 'Garage Door Closing'
-			if GPIO.input(37) == GPIO.HIGH:
-				print("Garage is already closed, do nothing.")
-				return 'Door 2 is already closed'
-
+		if what_door == "Door3" and dowhat == "Open" and door3.GetStatus()!="open":
+			print("Door 3 is currently Closed, let's open it.")
+			door3.PushButton()
+			return 'Garage Door Opening'
+		if what_door == "Door3" and dowhat == "Close" and door3.GetStatus()!="closed":
+			print("Door 3 is currently Open, let's close it.")
+			door3.PushButton()
+			return 'Garage Door Closing'
 	else:
 		return 'We have a problem'
 

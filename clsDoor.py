@@ -1,24 +1,3 @@
-from config import (
-	PORT,
-	ENABLE_PASSWORD,
-	PASSWORD,
-	ENABLE_SIRI,
-	SIRI_PASSWORD,
-	BG_COLOR_QUESTION,
-	BG_COLOR_OPEN,
-	BG_COLOR_CLOSED,
-	IMAGE_QUESTION,
-	IMAGE_OPEN,
-	IMAGE_CLOSED,
-	NUMBER_OF_DOORS,
-	DOOR_1_NAME,
-	DOOR_2_NAME,
-	DOOR_3_NAME,
-	SENSORS_PER_DOOR,
-	ADMIN,
-	ADMIN_PASS,
-)
-
 class clsDoor(object):
     status = ""
     name = ""
@@ -38,19 +17,13 @@ class clsDoor(object):
         if visible == True:
             self.visible = "inline-block"
 
-    def DoorOpen():
+    def PushButton():
         GPIO.output(self.PinOpener, GPIO.LOW)
         time.sleep(1)
         GPIO.output(self.PinOpener, GPIO.HIGH)
         time.sleep(2)
         return ""
 
-    def DoorClose():
-        GPIO.output(self.PinOpener, GPIO.LOW)
-        time.sleep(1)
-        GPIO.output(self.PinOpener, GPIO.HIGH)
-        time.sleep(2)
-        return ""
 
     def GetStatus():
         if GPIO.input(self.PinSensorOpen) == GPIO.LOW:
@@ -61,10 +34,13 @@ class clsDoor(object):
             return "unknown"
 
     def GetImage():
+        global IMAGE_OPEN
+        global IMAGE_CLOSED
+        global IMAGE_QUESTION
         if self.GetStatus == "open":
             return IMAGE_OPEN
         if self.GetStatus == "closed":
-            return IMAGE_OPEN
+            return IMAGE_CLOSED
         if self.GetStatus == "unknown":
             return IMAGE_QUESTION
 
