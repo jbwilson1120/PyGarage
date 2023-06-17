@@ -60,17 +60,16 @@ class clsDoor(object):
             return "unknown"
 
     def GetImage(self):
-        global IMAGE_OPEN
-        global IMAGE_CLOSED
-        global IMAGE_QUESTION
+        from config import (
+	        IMAGE_QUESTION,
+	        IMAGE_OPEN,
+	        IMAGE_CLOSED	        
+        )
         if self.GetStatus == "open":
-            print("Return open image")
             return IMAGE_OPEN
         if self.GetStatus == "closed":
-            print("Return closed image")
             return IMAGE_CLOSED
         if self.GetStatus == "unknown":
-            print("Return unknown image")
             return IMAGE_QUESTION
 
     def name(self):
