@@ -137,7 +137,8 @@ def index():
 
 	if NUMBER_OF_DOORS == 3:
 		print(door3.name + " is " + door3.GetStatus())
-
+	
+	Any_Door_Open = 0
 	if door1.GetStatus()=="open":
 		Any_Door_Open +=1
 	if door2.GetStatus()=="open" and NUMBER_OF_DOORS >=2:
@@ -316,6 +317,7 @@ def GarageDoorStatus():
 	if NUMBER_OF_DOORS == 3:
 		siri_door3_message = door3.name + " is " + door3.GetStatus()
 
+	Any_Door_Open = 0
 	if door1.GetStatus()=="open":
 		Any_Door_Open +=1
 	if door2.GetStatus()=="open" and NUMBER_OF_DOORS >=2:
