@@ -33,7 +33,7 @@ class clsDoor(object):
     )
     
     def __init__(self, name, visible, PinSensorOpen, PinSensorClosed, PinOpener, SensorCount):
-        global GPIO
+        #global GPIO
         self.name = name
         self.status = "Unknown"
         self.PinSensorOpen = PinSensorOpen
