@@ -1,3 +1,4 @@
+import RPi.GPIO as GPIO
 class clsDoor(object):
     status = ""
     name = ""
@@ -6,7 +7,6 @@ class clsDoor(object):
     PinSensorOpen = 0
     PinSensorClosed = 0
     SensorCount = 2
-    import RPi.GPIO as GPIO
 
     GPIO.setmode(GPIO.BOARD)  # the pin numbers refer to the board connector not the chip
     GPIO.setwarnings(False)
