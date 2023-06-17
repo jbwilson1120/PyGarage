@@ -36,7 +36,7 @@ directory = os.getcwd()
 APP_PATH = os.path.abspath(__file__)
 LOG_FILE = directory + '/log.py'
 
-No_Refresh
+global No_Refresh
 No_Refresh = int(datetime.now().strftime("%d%m"))
 Refresher = int(datetime.now().strftime("%d%m"))
 BadPassword = 0
