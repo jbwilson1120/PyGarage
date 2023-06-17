@@ -160,9 +160,9 @@ def index():
 		door2status = door2.GetImage(), 
 		door3status = door3.GetImage(), 
 		doorstatussize = imagesize, 
-		door1visable = door1.visible(), 
-		door2visable = door2.visible(), 
-		door3visable = door3.visible(), 
+		door1visable = door1.visible, 
+		door2visable = door2.visible, 
+		door3visable = door3.visible, 
 		D1Name = door1.name, 
 		D2Name = door2.name, 
 		D3Name = door3.name)
