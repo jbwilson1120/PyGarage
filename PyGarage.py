@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 from flask import Flask, render_template, request
 import socket
-import clsDoor
+from clsDoor import clsDoor
 import RPi.GPIO as GPIO
 
 hostname = socket.gethostname()
