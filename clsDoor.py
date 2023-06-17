@@ -8,25 +8,25 @@ class clsDoor(object):
     SensorCount = 2
     import RPi.GPIO as GPIO
     from config import (
-	PORT,
-	ENABLE_PASSWORD,
-	PASSWORD,
-	ENABLE_SIRI,
-	SIRI_PASSWORD,
-	BG_COLOR_QUESTION,
-	BG_COLOR_OPEN,
-	BG_COLOR_CLOSED,
-	IMAGE_QUESTION,
-	IMAGE_OPEN,
-	IMAGE_CLOSED,
-	NUMBER_OF_DOORS,
-	DOOR_1_NAME,
-	DOOR_2_NAME,
-	DOOR_3_NAME,
-	SENSORS_PER_DOOR,
-	ADMIN,
-	ADMIN_PASS,
-)
+	    PORT,
+	    ENABLE_PASSWORD,
+	    PASSWORD,
+	    ENABLE_SIRI,
+	    SIRI_PASSWORD,
+	    BG_COLOR_QUESTION,
+	    BG_COLOR_OPEN,
+	    BG_COLOR_CLOSED,
+	    IMAGE_QUESTION,
+	    IMAGE_OPEN,
+	    IMAGE_CLOSED,
+	    NUMBER_OF_DOORS,
+	    DOOR_1_NAME,
+	    DOOR_2_NAME,
+	    DOOR_3_NAME,
+	    SENSORS_PER_DOOR,
+	    ADMIN,
+	    ADMIN_PASS,
+    )
 
     def __init__(self, name, visible, PinSensorOpen, PinSensorClosed, PinOpener, SensorCount):
         self.name = name
@@ -64,10 +64,13 @@ class clsDoor(object):
         global IMAGE_CLOSED
         global IMAGE_QUESTION
         if self.GetStatus == "open":
+            print("Return open image")
             return IMAGE_OPEN
         if self.GetStatus == "closed":
+            print("Return closed image")
             return IMAGE_CLOSED
         if self.GetStatus == "unknown":
+            print("Return unknown image")
             return IMAGE_QUESTION
 
     def name(self):
