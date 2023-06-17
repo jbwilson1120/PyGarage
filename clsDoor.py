@@ -6,6 +6,7 @@ class clsDoor(object):
     PinSensorOpen = 0
     PinSensorClosed = 0
     SensorCount = 2
+    import RPi.GPIO as GPIO
 
     def __init__(self, name, visible, PinSensorOpen, PinSensorClosed, PinOpener, SensorCount):
         self.name = name
