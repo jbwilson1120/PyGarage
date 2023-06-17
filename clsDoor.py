@@ -17,6 +17,8 @@ class clsDoor(object):
         self.SensorCount = SensorCount
         if visible == True:
             self.visible = "inline-block"
+        else:
+            self.visible = "none"
 
     def PushButton(self):
         import RPi.GPIO as GPIO
