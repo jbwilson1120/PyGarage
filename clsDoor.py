@@ -7,6 +7,10 @@ class clsDoor(object):
     PinSensorClosed = 0
     SensorCount = 2
     import RPi.GPIO as GPIO
+
+    GPIO.setmode(GPIO.BOARD)  # the pin numbers refer to the board connector not the chip
+    GPIO.setwarnings(False)
+
     from config import (
 	    PORT,
 	    ENABLE_PASSWORD,
@@ -27,8 +31,9 @@ class clsDoor(object):
 	    ADMIN,
 	    ADMIN_PASS,
     )
-
+    
     def __init__(self, name, visible, PinSensorOpen, PinSensorClosed, PinOpener, SensorCount):
+        global GPIO
         self.name = name
         self.status = "Unknown"
         self.PinSensorOpen = PinSensorOpen
@@ -39,9 +44,13 @@ class clsDoor(object):
             self.visible = "inline-block"
         else:
             self.visible = "none"
+        GPIO.setup(self.PinSensorClosed, GPIO.IN, GPIO.PUD_UP)  # Door is Closed sensor
+        GPIO.setup(self.PinSensorOpen, GPIO.IN, GPIO.PUD_UP)    # Door is Open sensor
+        GPIO.setup(self.PinOpener, GPIO.OUT)			        # Door Relay to Open Door
+        GPIO.output(self.PinOpener, GPIO.HIGH)
 
     def PushButton(self):
-        import RPi.GPIO as GPIO
+        global GPIO
         import time
         GPIO.output(self.PinOpener, GPIO.LOW)
         time.sleep(1)
@@ -51,7 +60,7 @@ class clsDoor(object):
 
 
     def GetStatus(self):
-        import RPi.GPIO as GPIO
+        global GPIO
         if GPIO.input(self.PinSensorOpen) == GPIO.LOW:
             return "open"
         elif GPIO.input(self.PinSensorClosed) == GPIO.LOW:

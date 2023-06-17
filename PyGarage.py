@@ -9,23 +9,7 @@ import RPi.GPIO as GPIO
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(socket.gethostname() + ".local")
 
-GPIO.setmode(GPIO.BOARD)  # the pin numbers refer to the board connector not the chip
-GPIO.setwarnings(False)
-GPIO.setup(16, GPIO.IN, GPIO.PUD_UP) # Door 1 is Closed sensor
-GPIO.setup(18, GPIO.IN, GPIO.PUD_UP) # Door 1 is Open sensor
-GPIO.setup(29, GPIO.IN, GPIO.PUD_UP) # Door 2 is Closed sensor
-GPIO.setup(31, GPIO.IN, GPIO.PUD_UP) # Door 2 is Open sensor
-GPIO.setup(33, GPIO.IN, GPIO.PUD_UP) # Door 3 is Closed sensor
-GPIO.setup(37, GPIO.IN, GPIO.PUD_UP) # Door 3 is Open sensor
 
-GPIO.setup(7, GPIO.OUT)			#Door 1 Relay to Open Door
-GPIO.output(7, GPIO.HIGH)
-GPIO.setup(11, GPIO.OUT)		#Door 2 Relay to Open Door
-GPIO.output(11, GPIO.HIGH)
-GPIO.setup(13, GPIO.OUT)		#Door 3 Relay to Open Door
-GPIO.output(13, GPIO.HIGH)
-GPIO.setup(15, GPIO.OUT)		#Not Used for the project
-GPIO.output(15, GPIO.HIGH)
 
 from config import (
 	PORT,
@@ -52,7 +36,7 @@ directory = os.getcwd()
 APP_PATH = os.path.abspath(__file__)
 LOG_FILE = directory + '/log.py'
 
-global No_Refresh
+No_Refresh
 No_Refresh = int(datetime.now().strftime("%d%m"))
 Refresher = int(datetime.now().strftime("%d%m"))
 BadPassword = 0
