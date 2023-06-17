@@ -50,15 +50,15 @@ function ShowEnterButton(num) {
 
 <tr><td align=center style="display: {{ door1visable }};">
 <span style="display: {{ door1visable }};">
-<img src="/images/{{ door1status }}" width={{ doorstatussize }}% onclick="document.forms['garageform'].submit();"><br><big><big>{{ D1Name }}</big></big></span>
+<img src="/images/{{ door1status }}" width={{ doorstatussize }}% onclick="var y = document.getElementById('door1'); y.checked = true; document.forms['garageform'].submit();"><br><big><big>{{ D1Name }}</big></big></span>
 
 </td><td align=center style="display: {{ door2visable }};">
 <span style="display: {{ door2visable }};">
-<img src="/images/{{ door2status }}" width={{ doorstatussize }}% onclick="document.forms['garageform'].submit();"><br><big><big>{{ D2Name }}</big></big></span>
+<img src="/images/{{ door2status }}" width={{ doorstatussize }}% onclick="var y = document.getElementById('door2'); y.checked = true; document.forms['garageform'].submit();"><br><big><big>{{ D2Name }}</big></big></span>
 
 </td><td align=center style="display: {{ door3visable }};">
 <span style="display: {{ door3visable }};">
-<img src="/images/{{ door3status }}" width={{ doorstatussize }}% onclick="document.forms['garageform'].submit();"><br><big><big>{{ D3Name }}</big></big></span>
+<img src="/images/{{ door3status }}" width={{ doorstatussize }}% onclick="var y = document.getElementById('door3'); y.checked = true; document.forms['garageform'].submit();"><br><big><big>{{ D3Name }}</big></big></span>
 
 </td></tr></table>
 <br><br><a href="/Log">Click for Log File</a><br><br>
