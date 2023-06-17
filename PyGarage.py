@@ -63,7 +63,7 @@ bgcolor = BG_COLOR_QUESTION		#Default Status, Door is questionable, so backgroun
 # Setup the doors
 door1 = clsDoor(DOOR_1_NAME, True, 18, 16, 7, SENSORS_PER_DOOR)
 door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), 31, 29, 11, SENSORS_PER_DOOR)
-door2 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), 37, 33, 13, SENSORS_PER_DOOR)
+door3 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), 37, 33, 13, SENSORS_PER_DOOR)
 imagesize = 100
 
 app = Flask(__name__)
