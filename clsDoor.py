@@ -19,6 +19,7 @@ class clsDoor(object):
             self.visible = "inline-block"
 
     def PushButton(self):
+        global GPIO
         GPIO.output(self.PinOpener, GPIO.LOW)
         time.sleep(1)
         GPIO.output(self.PinOpener, GPIO.HIGH)
@@ -27,6 +28,7 @@ class clsDoor(object):
 
 
     def GetStatus(self):
+        global GPIO
         if GPIO.input(self.PinSensorOpen) == GPIO.LOW:
             return "open"
         elif GPIO.input(self.PinSensorClosed) == GPIO.LOW:
