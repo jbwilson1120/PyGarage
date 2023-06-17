@@ -20,6 +20,7 @@ class clsDoor(object):
 
     def PushButton(self):
         import RPi.GPIO as GPIO
+        import time
         GPIO.output(self.PinOpener, GPIO.LOW)
         time.sleep(1)
         GPIO.output(self.PinOpener, GPIO.HIGH)
