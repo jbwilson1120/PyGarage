@@ -98,11 +98,11 @@ def index():
 				No_Refresh = No_Refresh + 1;
 
 				if Door_To_Open == "door1":
-					door1.DoorOpen()
+					door1.PushButton()
 				if Door_To_Open == "door2":
-					door2.DoorOpen()
+					door2.PushButton()
 				if Door_To_Open == "door3":
-					door3.DoorOpen()
+					door3.PushButton()
 	
 			else:  		# 12345678 is the Password that Opens Garage Door (Code if Password is Incorrect)
 				if code == "":
