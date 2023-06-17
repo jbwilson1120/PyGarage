@@ -17,7 +17,7 @@ class clsDoor(object):
         if visible == True:
             self.visible = "inline-block"
 
-    def PushButton():
+    def PushButton(self):
         GPIO.output(self.PinOpener, GPIO.LOW)
         time.sleep(1)
         GPIO.output(self.PinOpener, GPIO.HIGH)
@@ -25,7 +25,7 @@ class clsDoor(object):
         return ""
 
 
-    def GetStatus():
+    def GetStatus(self):
         if GPIO.input(self.PinSensorOpen) == GPIO.LOW:
             return "open"
         elif GPIO.input(self.PinSensorClosed) == GPIO.LOW:
@@ -33,7 +33,7 @@ class clsDoor(object):
         else:
             return "unknown"
 
-    def GetImage():
+    def GetImage(self):
         global IMAGE_OPEN
         global IMAGE_CLOSED
         global IMAGE_QUESTION
@@ -44,10 +44,10 @@ class clsDoor(object):
         if self.GetStatus == "unknown":
             return IMAGE_QUESTION
 
-    def name():
+    def name(self):
         return self.name
 
-    def visible():
+    def visible(self):
         return self.visible
 
     def __str__(self):
