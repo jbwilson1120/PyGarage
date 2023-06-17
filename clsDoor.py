@@ -65,11 +65,11 @@ class clsDoor(object):
 	        IMAGE_OPEN,
 	        IMAGE_CLOSED	        
         )
-        if self.GetStatus == "open":
+        if self.GetStatus() == "open":
             return IMAGE_OPEN
-        if self.GetStatus == "closed":
+        if self.GetStatus() == "closed":
             return IMAGE_CLOSED
-        if self.GetStatus == "unknown":
+        if self.GetStatus() == "unknown":
             return IMAGE_QUESTION
 
     def name(self):
