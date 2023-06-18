@@ -9,8 +9,6 @@ import RPi.GPIO as GPIO
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(socket.gethostname() + ".local")
 
-
-
 from config import (
 	PORT,
 	ENABLE_PASSWORD,
