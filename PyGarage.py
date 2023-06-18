@@ -9,13 +9,6 @@ import RPi.GPIO as GPIO
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(socket.gethostname() + ".local")
 
-# Test
-GPIO.setmode(GPIO.BOARD)  # the pin numbers refer to the board connector not the chip
-GPIO.setwarnings(False)
-TestPin = 16
-GPIO.setup(TestPin, GPIO.IN, GPIO.PUD_UP)
-print('Pin '+str(TestPin)+' value = '+str(GPIO.input(TestPin)))
-
 from config import (
 	PORT,
 	ENABLE_PASSWORD,
@@ -50,9 +43,9 @@ Any_Door_Open = 0			#Default Status, If any door is Not Closed, this will be gre
 bgcolor = BG_COLOR_QUESTION		#Default Status, Door is questionable, so background yellow
 
 # Setup the doors
-door1 = clsDoor(DOOR_1_NAME, True, 18, 16, 7, SENSORS_PER_DOOR)
-door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), 31, 29, 11, SENSORS_PER_DOOR)
-door3 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), 37, 33, 13, SENSORS_PER_DOOR)
+door1 = clsDoor(DOOR_1_NAME, True, 8, 10, 3, SENSORS_PER_DOOR)
+door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), 16, 18, 5, SENSORS_PER_DOOR)
+door3 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), 22, 24, 7, SENSORS_PER_DOOR)
 imagesize = 100
 
 app = Flask(__name__)
