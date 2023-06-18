@@ -9,6 +9,12 @@ import RPi.GPIO as GPIO
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(socket.gethostname() + ".local")
 
+# Test
+GPIO.setmode(GPIO.BOARD)  # the pin numbers refer to the board connector not the chip
+GPIO.setwarnings(False)
+GPIO.setup(self.PinSensorClosed, GPIO.IN, GPIO.PUD_UP)
+print('Pin 16 value = '+str(GPIO.input(16)))
+
 from config import (
 	PORT,
 	ENABLE_PASSWORD,

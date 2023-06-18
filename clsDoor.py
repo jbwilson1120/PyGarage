@@ -67,7 +67,7 @@ class clsDoor(object):
             self.visible = "none"
         GPIO.setup(self.PinSensorClosed, GPIO.IN, GPIO.PUD_UP)  # Door is Closed sensor
         GPIO.setup(self.PinSensorOpen, GPIO.IN, GPIO.PUD_UP)    # Door is Open sensor
-        GPIO.setup(self.PinOpener, GPIO.OUT)			        # Door Relay to Open Door
+        GPIO.setup(self.PinOpener, GPIO.OUT)			        # Door Relay to Open/Close Door
         GPIO.output(self.PinOpener, GPIO.HIGH)
 
     def PushButton(self):
@@ -79,8 +79,6 @@ class clsDoor(object):
 
 
     def GetStatus(self):
-        print(GPIO.input(self.PinSensorOpen))
-        print(GPIO.input(self.PinSensorClosed))
         if GPIO.input(self.PinSensorOpen) == GPIO.LOW:
             return "open"
         elif GPIO.input(self.PinSensorClosed) == GPIO.LOW:
