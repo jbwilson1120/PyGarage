@@ -43,8 +43,8 @@ Any_Door_Open = 0			#Default Status, If any door is Not Closed, this will be gre
 bgcolor = BG_COLOR_QUESTION		#Default Status, Door is questionable, so background yellow
 
 # Setup the doors
-door1 = clsDoor(DOOR_1_NAME, True, 8, 10, 3, SENSORS_PER_DOOR)
-door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), 16, 18, 5, SENSORS_PER_DOOR)
+door1 = clsDoor(DOOR_1_NAME, True, 8, 10, 16, SENSORS_PER_DOOR)
+door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), 36, 38, 18, SENSORS_PER_DOOR)
 door3 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), 22, 24, 7, SENSORS_PER_DOOR)
 imagesize = 100
 
