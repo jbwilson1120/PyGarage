@@ -79,9 +79,9 @@ class clsDoor(object):
 
 
     def GetStatus(self):
-        if GPIO.input(self.PinSensorOpen) == GPIO.LOW:
+        if GPIO.input(self.PinSensorOpen) == GPIO.HIGH:
             return "open"
-        elif GPIO.input(self.PinSensorClosed) == GPIO.LOW:
+        elif GPIO.input(self.PinSensorClosed) == GPIO.HIGH:
             return "closed"
         else:
             return "unknown"
