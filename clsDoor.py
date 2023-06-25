@@ -82,9 +82,9 @@ class clsDoor(object):
 
         print(self.name + " PinSensorOpen = " + str(GPIO.input(self.PinSensorOpen)))
         print(self.name + " PinSensorClosed = " + str(GPIO.input(self.PinSensorClosed)))
-        if GPIO.input(self.PinSensorOpen):
+        if GPIO.input(self.PinSensorOpen)==False:
             return "open"
-        elif GPIO.input(self.PinSensorClosed):
+        elif GPIO.input(self.PinSensorClosed)==False:
             return "closed"
         else:
             return "unknown"
