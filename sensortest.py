@@ -15,7 +15,12 @@ GPIO.setup(pinconfig.DOOR3_OPEN_SENSOR, GPIO.IN, GPIO.PUD_DOWN)    # Door is Ope
 
 try:
   while 1 >=0:
-    print('D1_Open = '+str(GPIO.input(pinconfig.DOOR1_CLOSED_SENSOR)) + '\tD1_Closed = '+str(GPIO.input(pinconfig.DOOR1_CLOSED_SENSOR)) + '\tD2_Open = '+str(GPIO.input(pinconfig.DOOR2_OPEN_SENSOR)) + '\tD2_Closed = '+str(GPIO.input(pinconfig.DOOR2_CLOSED_SENSOR)) + '\tD3_Open = '+str(GPIO.input(pinconfig.DOOR3_OPEN_SENSOR)) + '\tD3_Closed = '+str(GPIO.input(pinconfig.DOOR2_CLOSED_SENSOR)))
+    print('D1_Open = '+str(GPIO.input(pinconfig.DOOR1_OPEN_SENSOR)) + 
+          '\tD1_Closed = '+str(GPIO.input(pinconfig.DOOR1_CLOSED_SENSOR)) + 
+          '\tD2_Open = '+str(GPIO.input(pinconfig.DOOR2_OPEN_SENSOR)) + 
+          '\tD2_Closed = '+str(GPIO.input(pinconfig.DOOR2_CLOSED_SENSOR)) + 
+          '\tD3_Open = '+str(GPIO.input(pinconfig.DOOR3_OPEN_SENSOR)) + 
+          '\tD3_Closed = '+str(GPIO.input(pinconfig.DOOR3_CLOSED_SENSOR)))
     time.sleep(1)             # pauses system for 1 second
 
 except KeyboardInterrupt:     # Stops program when "Control + C" is entered
