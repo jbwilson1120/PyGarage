@@ -21,7 +21,7 @@ try:
           '\tD2_Closed = '+str(GPIO.input(pinconfig.DOOR2_CLOSED_SENSOR)) + 
           '\tD3_Open = '+str(GPIO.input(pinconfig.DOOR3_OPEN_SENSOR)) + 
           '\tD3_Closed = '+str(GPIO.input(pinconfig.DOOR3_CLOSED_SENSOR)))
-    time.sleep(1)             # pauses system for 1 second
+    time.sleep(0.1)             # pauses system for 1 second
 
 except KeyboardInterrupt:     # Stops program when "Control + C" is entered
   GPIO.cleanup()               # Turns OFF all relay switches
