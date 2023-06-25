@@ -65,8 +65,8 @@ class clsDoor(object):
             self.visible = "inline-block"
         else:
             self.visible = "none"
-        GPIO.setup(self.PinSensorClosed, GPIO.IN, GPIO.PUD_UP)  # Door is Closed sensor
-        GPIO.setup(self.PinSensorOpen, GPIO.IN, GPIO.PUD_UP)    # Door is Open sensor
+        GPIO.setup(self.PinSensorClosed, GPIO.IN, GPIO.PUD_DOWN)  # Door is Closed sensor
+        GPIO.setup(self.PinSensorOpen, GPIO.IN, GPIO.PUD_DOWN)    # Door is Open sensor
         GPIO.setup(self.PinOpener, GPIO.OUT)			        # Door Relay to Open/Close Door
         GPIO.output(self.PinOpener, GPIO.HIGH)
 
@@ -82,9 +82,9 @@ class clsDoor(object):
 
         print(self.name + " PinSensorOpen = " + str(GPIO.input(self.PinSensorOpen)))
         print(self.name + " PinSensorClosed = " + str(GPIO.input(self.PinSensorClosed)))
-        if GPIO.input(self.PinSensorOpen) == 0:
+        if GPIO.input(self.PinSensorOpen):
             return "open"
-        elif GPIO.input(self.PinSensorClosed) == 0:
+        elif GPIO.input(self.PinSensorClosed):
             return "closed"
         else:
             return "unknown"
