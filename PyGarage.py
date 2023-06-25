@@ -29,6 +29,7 @@ from config import (
 	ADMIN,
 	ADMIN_PASS,
 )
+import pinconfig
 
 directory = os.getcwd()
 APP_PATH = os.path.abspath(__file__)
@@ -43,9 +44,9 @@ Any_Door_Open = 0			#Default Status, If any door is Not Closed, this will be gre
 bgcolor = BG_COLOR_QUESTION		#Default Status, Door is questionable, so background yellow
 
 # Setup the doors
-door1 = clsDoor(DOOR_1_NAME, True, 8, 10, 16, SENSORS_PER_DOOR)
-door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), 36, 38, 18, SENSORS_PER_DOOR)
-door3 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), 22, 24, 7, SENSORS_PER_DOOR)
+door1 = clsDoor(DOOR_1_NAME, True, pinconfig.DOOR1_OPEN_SENSOR, pinconfig.DOOR1_CLOSED_SENSOR, pinconfig.DOOR1_BUTTON, SENSORS_PER_DOOR)
+door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), pinconfig.DOOR2_OPEN_SENSOR, pinconfig.DOOR2_CLOSED_SENSOR, pinconfig.DOOR2_BUTTON, SENSORS_PER_DOOR)
+door3 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), pinconfig.DOOR3_OPEN_SENSOR, pinconfig.DOOR3_CLOSED_SENSOR, pinconfig.DOOR3_BUTTON, SENSORS_PER_DOOR)
 imagesize = 100
 
 app = Flask(__name__)
