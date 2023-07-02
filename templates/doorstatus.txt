@@ -25,7 +25,7 @@ function ShowEnterButton(num) {
 
 
 </head>
-<body bgcolor="#00003A" style="background-image: url('/images/DoorsOfDurin2000.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-position: center top;">
+<body bgcolor="#000000" style="background-image: url('/images/DoorsOfDurin2000.jpg'); background-repeat: no-repeat; background-attachment: fixed; background-position: center top;">
 <center>
 <br>
 
