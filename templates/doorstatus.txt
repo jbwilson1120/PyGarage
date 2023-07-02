@@ -25,7 +25,7 @@ function ShowEnterButton(num) {
 
 
 </head>
-<body bgcolor="{{ color }}">
+<body <!--bgcolor="{{ color }}"--> style="background-image: url('/images/DoorsOfDurin2000.jpg');">
 <center>
 <br>
 
