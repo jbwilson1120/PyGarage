@@ -47,7 +47,7 @@ bgcolor = BG_COLOR_QUESTION		#Default Status, Door is questionable, so backgroun
 door1 = clsDoor(DOOR_1_NAME, True, pinconfig.DOOR1_OPEN_SENSOR, pinconfig.DOOR1_CLOSED_SENSOR, pinconfig.DOOR1_BUTTON, SENSORS_PER_DOOR)
 door2 = clsDoor(DOOR_2_NAME, (NUMBER_OF_DOORS >= 2), pinconfig.DOOR2_OPEN_SENSOR, pinconfig.DOOR2_CLOSED_SENSOR, pinconfig.DOOR2_BUTTON, SENSORS_PER_DOOR)
 door3 = clsDoor(DOOR_3_NAME, (NUMBER_OF_DOORS == 3), pinconfig.DOOR3_OPEN_SENSOR, pinconfig.DOOR3_CLOSED_SENSOR, pinconfig.DOOR3_BUTTON, SENSORS_PER_DOOR)
-imagesize = 100
+imagesize = 50
 
 app = Flask(__name__)
 
