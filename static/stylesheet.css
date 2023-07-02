@@ -64,3 +64,8 @@ block[h2] {
     width: 256px;
 }
 
+big.doorname {
+    background-color: #EFEFEF;
+    padding: 8px;
+    color: #00000A;
+}
