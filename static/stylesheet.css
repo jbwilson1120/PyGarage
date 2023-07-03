@@ -64,7 +64,7 @@ block[h2] {
     width: 256px;
 }
 
-.doorname {
+.doorname, .logfilelink {
     background-color: rgba(8, 37, 71, 0.8);
     padding: 4px;
     margin: 2px;

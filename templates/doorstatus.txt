@@ -62,6 +62,6 @@ function ShowEnterButton(num) {
 <img src="/images/{{ door3status }}" width={{ doorstatussize }}% onclick="var y = document.getElementById('door3'); y.checked = true; document.forms['garageform'].submit();"><br><big><big class="doorname">{{ D3Name }}</big></big></span>
 
 </td></tr></table>
-<br><br><a href="/Log">Click for Log File</a><br><br>
+<br><br><a href="/Log" class="logfilelink">Click for Log File</a><br><br>
 </center>
 </body></html>
