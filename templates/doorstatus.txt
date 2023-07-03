@@ -29,7 +29,7 @@ function ShowEnterButton(num) {
 <center>
 <br>
 
-<button onclick="myFunction()">Click Here to Operate Garage Door</button><br><br>
+<button onclick="myFunction()">Speak Friend and Enter</button><br><br>
 
 <div id="ShowHide" style="display: none;">
 	<form action="/" method="post" id="garageform" autocomplete="off">
