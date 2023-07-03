@@ -64,9 +64,19 @@ block[h2] {
     width: 256px;
 }
 
-.doorname, .logfilelink {
+.doorname, a.logfilelink {
     background-color: rgba(8, 37, 71, 0.8);
     padding: 4px;
     margin: 2px;
     color: #FFFFFF;
 }
+    a.logfilelink:link { color: #FFFFFF; }
+    a.logfilelink:visited {
+        color: #FFFFFF;
+    }
+    a.logfilelink:active {
+        color: #FFFFFF;
+    }
+    a.logfilelink:hover {
+        color: #FFFFFF;
+    }
