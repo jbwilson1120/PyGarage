@@ -65,8 +65,7 @@ block[h2] {
 }
 
 .doorname {
-    background-color: #082547;
-    opacity: 0.6;
+    background-color: rgba(8, 37, 71, 0.8);
     padding: 4px;
     margin: 2px;
     color: #FFFFFF;
