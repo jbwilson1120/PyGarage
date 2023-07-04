@@ -348,7 +348,8 @@ def GetStatus():
 	door_to_check = request.args.get('door')
 
 	if api_key != APIKEY:
-		resp = "Invalid API key. Received " + api_key + ". Looking for " + APIKEY
+		resp = request.headers
+		#resp = "Invalid API key. Received " + api_key + ". Looking for " + APIKEY
 	else:
 		if door_to_check =="":
 			resp = "Argument 'door' is required"
