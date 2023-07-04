@@ -34,7 +34,6 @@ function ShowEnterButton(num) {
 <div id="ShowHide" style="display: none;">
 	<form action="/" method="post" id="garageform" autocomplete="off">
 	<input id="garagecode" name="garagecode" type="text" pattern="[0-9]*" value="" STYLE="background-color:white;"><br><br>
-    <div>Speak friend and enter</div>
 <div style="display:none;">
 <span align=center style="display: {{ door1visable }};" onclick="ShowEnterButton(1)"><input type="radio" id="door1" name="garagedoorradio" value="door1" onclick="ShowEnterButton(1)"><big><big> {{ D1Name }} </big></big></span>
 <span align=center style="display: {{ door2visable }};" onclick="ShowEnterButton(2)">&nbsp;&nbsp;&nbsp;&nbsp; <input type="radio" id="door2" name="garagedoorradio" value="door2" onclick="ShowEnterButton(2)"><big><big> {{ D2Name }} </big></big></span>

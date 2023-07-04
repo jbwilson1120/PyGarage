@@ -26,6 +26,7 @@ from config import (
 	DOOR_2_NAME,
 	DOOR_3_NAME,
 	SENSORS_PER_DOOR,
+	APIKEY,
 	ADMIN,
 	ADMIN_PASS,
 )
@@ -75,17 +76,22 @@ def index():
 		Door_To_Open = request.form.get('garagedoorradio', "UNKNOWN")
 		Password_Counter = int(request.form.get('No_Refresh', "0"))
 
+		PASSWORD_LIST = PASSWORD.split()
+
 		if ENABLE_PASSWORD == "YES":
-			if code == PASSWORD and Password_Counter == No_Refresh and BadPassword <= 5:  # 12345678 is the Default Password that Opens Garage Door (Code if Password is Correct)
+			if code in PASSWORD_LIST and Password_Counter == No_Refresh and BadPassword <= 5:  # 12345678 is the Default Password that Opens Garage Door (Code if Password is Correct)
 				print("Door requested to open: " + Door_To_Open)
 				No_Refresh = No_Refresh + 1;
-
+				logfile = open("static/log.txt","a")
+				logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Door opened/closed: " + Door_To_Open + " -- %Y/%m/%d -- %H:%M  \n"))
+				logfile.close()
 				if Door_To_Open == "door1":
 					door1.PushButton()
 				if Door_To_Open == "door2":
 					door2.PushButton()
 				if Door_To_Open == "door3":
 					door3.PushButton()
+				
 	
 			else:  		# 12345678 is the Password that Opens Garage Door (Code if Password is Incorrect)
 				if code == "":
@@ -93,7 +99,7 @@ def index():
 				else:
 					BadPassword += 1
 					logfile = open("static/log.txt","a")
-					logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Password Entered: " + code + " -- %Y/%m/%d -- %H:%M  \n"))
+					logfile.write("     " + datetime.now().strftime(request.environ['REMOTE_ADDR'] + "     Password attempt:  -- %Y/%m/%d -- %H:%M  \n"))
 					logfile.close()
 					print(request.environ['REMOTE_ADDR'] + " -- " + str(BadPassword) + " wrong password(s) have been entered!")
 
@@ -197,6 +203,7 @@ def settings():
 				DOOR_2_NAME = DOOR_2_NAME,
 				DOOR_3_NAME = DOOR_3_NAME,
 				SENSORS_PER_DOOR = SENSORS_PER_DOOR,
+				APIKEY = APIKEY,
 				ADMIN = ADMIN,
 				ADMIN_PASS = ADMIN_PASS,
 				APP_PATH = APP_PATH,
@@ -220,6 +227,7 @@ def ChangeSettings():
 	DOOR_2_NAME = request.form['DOOR_2_NAME']
 	DOOR_3_NAME = request.form['DOOR_3_NAME']
 	SENSORS_PER_DOOR = request.form['SENSORS_PER_DOOR']
+	APIKEY = request.form['APIKEY']
 	ADMIN = request.form['ADMIN']
 	ADMIN_PASS = request.form['ADMIN_PASS']
 
@@ -243,6 +251,7 @@ def ChangeSettings():
 	ConfigFile.write('DOOR_2_NAME = "' + DOOR_2_NAME + '"\n')
 	ConfigFile.write('DOOR_3_NAME = "' + DOOR_3_NAME + '"\n')
 	ConfigFile.write('SENSORS_PER_DOOR = ' + SENSORS_PER_DOOR + '\n')
+	ConfigFile.write('APIKEY = "' + APIKEY + '"\n')
 	ConfigFile.write('ADMIN = "' + ADMIN + '"\n')
 	ConfigFile.write('ADMIN_PASS = "' + ADMIN_PASS + '"\n')
 
@@ -328,6 +337,28 @@ def GarageDoorStatus():
 
 		return siri_message
 
+@app.route('/api/GetStatus', methods=['GET'])
+def GetStatus():
+	# Returns the status of a single door. The 'door' argument must be supplied in the url as an integer
+	global door1
+	global door2
+	global door3
+	resp = ""
+	api_key = request.headers.get('apikey')
+	door_to_check = request.args.get('door')
+
+	if api_key != APIKEY:
+		resp = "Invalid API key"
+	else:
+		if door_to_check =="":
+			resp = "Argument 'door' is required"
+		if door_to_check=="1":
+			resp = door1.GetStatus()
+		if door_to_check=="2":
+			resp = door2.GetStatus()
+		if door_to_check=="3":
+			resp = door3.GetStatus()
+	return resp
 
 @app.route('/Siri/Garage', methods=['POST'])
 def GarageSiri():

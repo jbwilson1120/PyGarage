@@ -16,14 +16,11 @@ th, td {
 
 
 <table><tr><td valign="top" align="center">
-<img src="/images/steve.png"><br><br>
 <a href="/">Garage Home</a><br><br>
 <a href="/Settings">General Settings</a><br><br>
-<a href="/page/sirisetup.html">SIRI Setup Instructions</a><br><br>
 
-<b><u>Steve Does Stuff!</u></b><br>
-<a href="https://youtube.com/shrocky2">YouTube</a><br><br>
-<a href="https://github.com/shrocky2/SiriGarage">GitHub</a><br>
+<b><u>Source:</u></b><br>
+<a href="https://github.com/jbwilson1120/PyGarage">GitHub</a><br>
 
 
 </td><td>
@@ -64,7 +61,7 @@ You can give each door a unique name.
 <td  rowspan="2"> Turn On/Off the ability to open/close the garage door with a password<br>
 This password will be NUMBERS ONLY.
 </td></tr>
-<tr><td align="right">Garage Door Password:<br><i>(Default: 12345678)</i></td><td><input type="text" name="PASSWORD" value="{{ PASSWORD }}"></td>
+<tr><td align="right">Garage Door Password:<br><i>(Separate each password with a comma)</i></td><td><input type="text" name="PASSWORD" value="{{ PASSWORD }}"></td>
 </tr>
 <tr><td&nbsp;</td><td>&nbsp;</td></tr>
 
@@ -79,6 +76,7 @@ This Password can be any alphanumeric & symbol password.
 <tr><td&nbsp;</td><td>&nbsp;</td></tr>
 
 <tr><td align="right">Default Webpage Port:</td><td><input type="text" name="PORT" value="{{ PORT }}"></td></tr>
+<tr><td align="right">API Key:</td><td><input type="text" name="APIKEY" value="{{ APIKEY }}"></td></tr>
 <tr><td align="right">Admin Name:</td><td><input type="text" name="ADMIN" value="{{ ADMIN }}"></td></tr>
 <tr><td align="right">Admin Password:</td><td><input type="text" name="ADMIN_PASS" value="{{ ADMIN_PASS }}"></td></tr>
 
