@@ -113,11 +113,11 @@ def index():
 			print("Door requested to open: " + Door_To_Open)
 			No_Refresh += 1
 			if Door_To_Open == "door1":
-				door1.DoorOpen()
+				door1.PushButton()
 			if Door_To_Open == "door2":
-				door2.DoorOpen()
+				door2.PushButton()
 			if Door_To_Open == "door3":
-				door3.DoorOpen()
+				door3.PushButton()
 	
 	print(door1.name + " is " + door1.GetStatus())
 
@@ -358,6 +358,58 @@ def GetStatus():
 			resp = door2.GetStatus()
 		if door_to_check=="3":
 			resp = door3.GetStatus()
+	return resp
+
+@app.route('/api/OpenDoor', methods=['GET'])
+def OpenDoor():
+	# Returns the status of a single door. The 'door' argument must be supplied in the url as an integer
+	global door1
+	global door2
+	global door3
+	resp = ""
+	api_key = request.headers.get('apikey')
+	door_to_check = request.args.get('door')
+
+	if api_key != APIKEY:
+		resp = "Invalid API key"
+	else:
+		if door_to_check =="":
+			resp = "Argument 'door' is required"
+		if door_to_check=="1":
+			door1.PushButton()
+			resp = "door 1 opened"
+		if door_to_check=="2":
+			door2.PushButton()
+			resp = "door 2 opened"
+		if door_to_check=="3":
+			door3.PushButton()
+			resp = "door 3 opened"
+	return resp
+
+@app.route('/api/CloseDoor', methods=['GET'])
+def CloseDoor():
+	# Returns the status of a single door. The 'door' argument must be supplied in the url as an integer
+	global door1
+	global door2
+	global door3
+	resp = ""
+	api_key = request.headers.get('apikey')
+	door_to_check = request.args.get('door')
+
+	if api_key != APIKEY:
+		resp = "Invalid API key"
+	else:
+		if door_to_check =="":
+			resp = "Argument 'door' is required"
+		if door_to_check=="1":
+			door1.PushButton()
+			resp = "door 1 closed"
+		if door_to_check=="2":
+			door2.PushButton()
+			resp = "door 2 closed"
+		if door_to_check=="3":
+			door3.PushButton()
+			resp = "door 3 closed"
 	return resp
 
 @app.route('/Siri/Garage', methods=['POST'])
